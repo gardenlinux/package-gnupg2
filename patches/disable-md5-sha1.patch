@@ -1,0 +1,22 @@
+diff --git a/debian/rules b/debian/rules
+index 230ed7a95..53d6f3102 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -55,6 +55,8 @@ execute_after_dh_auto_configure:
+ 		--enable-large-secmem \
+ 		--with-mailprog=/usr/sbin/sendmail \
+ 		--enable-maintainer-mode \
++		--disable-gpg-md5 \
++		--disable-gpg-sha1 \
+ 		$(NODOC)
+ 	# win32 uses hand-written *FLAGS
+ 	# mkdefsinc is built with *_FOR_BUILD
+@@ -119,6 +121,8 @@ else # ifeq ($(filter pkg.gnupg2.gpgvonly,$(DEB_BUILD_PROFILES)),)
+ override_dh_auto_configure:
+ 	dh_auto_configure --builddirectory=build --verbose -- \
+ 		--libexecdir=\$${prefix}/lib/gnupg \
++		--disable-gpg-md5 \
++		--disable-gpg-sha1 \
+ 		--enable-maintainer-mode \
+ 		$(NODOC) \
+ 		$(foreach x, $(GPGV_UNNEEDED), --disable-$(x))

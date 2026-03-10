@@ -1,0 +1,16 @@
+diff --git a/g10/misc.c b/g10/misc.c
+index 2f4b452dd..5de8f35bb 100644
+--- a/g10/misc.c
++++ b/g10/misc.c
+@@ -840,7 +840,11 @@ map_md_openpgp_to_gcry (digest_algo_t algo)
+     case DIGEST_ALGO_MD5:    return 0;
+ #endif
+ 
++#ifdef GPG_USE_SHA1
+     case DIGEST_ALGO_SHA1:   return GCRY_MD_SHA1;
++#else
++    case DIGEST_ALGO_SHA1:   return 0;
++#endif
+ 
+ #ifdef GPG_USE_RMD160
+     case DIGEST_ALGO_RMD160: return GCRY_MD_RMD160;

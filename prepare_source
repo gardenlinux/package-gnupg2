@@ -1,0 +1,3 @@
+apt_src gnupg2
+apply_patches
+import_upstream_patches

@@ -1,0 +1,75 @@
+diff --git a/g10/gpg.c b/g10/gpg.c
+index 1a96db989..14ccc5774 100644
+--- a/g10/gpg.c
++++ b/g10/gpg.c
+@@ -2600,7 +2600,6 @@ main (int argc, char **argv)
+     gnupg_set_homedir (homedirvalue);
+ 
+     /* Set default options which require that malloc stuff is ready.  */
+-    additional_weak_digest ("MD5");
+     parse_auto_key_locate (DEFAULT_AKL_LIST);
+ 
+     argc = orig_argc;
+@@ -5716,13 +5715,13 @@ print_mds( const char *fname, int algo )
+     {
+       if (!gcry_md_test_algo (GCRY_MD_MD5))
+         gcry_md_enable (md, GCRY_MD_MD5);
+-      gcry_md_enable (md, GCRY_MD_SHA1);
++      if (!gcry_md_test_algo (GCRY_MD_SHA1))
++        gcry_md_enable (md, GCRY_MD_SHA1);
+       if (!gcry_md_test_algo (GCRY_MD_RMD160))
+         gcry_md_enable (md, GCRY_MD_RMD160);
+       if (!gcry_md_test_algo (GCRY_MD_SHA224))
+         gcry_md_enable (md, GCRY_MD_SHA224);
+-      if (!gcry_md_test_algo (GCRY_MD_SHA256))
+-        gcry_md_enable (md, GCRY_MD_SHA256);
++      gcry_md_enable (md, GCRY_MD_SHA256);
+       if (!gcry_md_test_algo (GCRY_MD_SHA384))
+         gcry_md_enable (md, GCRY_MD_SHA384);
+       if (!gcry_md_test_algo (GCRY_MD_SHA512))
+@@ -5745,13 +5744,13 @@ print_mds( const char *fname, int algo )
+             {
+               if (!gcry_md_test_algo (GCRY_MD_MD5))
+                 print_hashline( md, GCRY_MD_MD5, fname );
+-              print_hashline( md, GCRY_MD_SHA1, fname );
++              if (!gcry_md_test_algo (GCRY_MD_SHA1))
++                print_hashline( md, GCRY_MD_SHA1, fname );
+               if (!gcry_md_test_algo (GCRY_MD_RMD160))
+                 print_hashline( md, GCRY_MD_RMD160, fname );
+               if (!gcry_md_test_algo (GCRY_MD_SHA224))
+                 print_hashline (md, GCRY_MD_SHA224, fname);
+-              if (!gcry_md_test_algo (GCRY_MD_SHA256))
+-                print_hashline( md, GCRY_MD_SHA256, fname );
++              print_hashline( md, GCRY_MD_SHA256, fname );
+               if (!gcry_md_test_algo (GCRY_MD_SHA384))
+                 print_hashline ( md, GCRY_MD_SHA384, fname );
+               if (!gcry_md_test_algo (GCRY_MD_SHA512))
+@@ -5766,13 +5765,13 @@ print_mds( const char *fname, int algo )
+             {
+               if (!gcry_md_test_algo (GCRY_MD_MD5))
+                 print_hex (md, GCRY_MD_MD5, fname);
+-              print_hex (md, GCRY_MD_SHA1, fname );
++              if (!gcry_md_test_algo (GCRY_MD_SHA1))
++                print_hex (md, GCRY_MD_SHA1, fname );
+               if (!gcry_md_test_algo (GCRY_MD_RMD160))
+                 print_hex (md, GCRY_MD_RMD160, fname );
+               if (!gcry_md_test_algo (GCRY_MD_SHA224))
+                 print_hex (md, GCRY_MD_SHA224, fname);
+-              if (!gcry_md_test_algo (GCRY_MD_SHA256))
+-                print_hex (md, GCRY_MD_SHA256, fname );
++              print_hex (md, GCRY_MD_SHA256, fname );
+               if (!gcry_md_test_algo (GCRY_MD_SHA384))
+                 print_hex (md, GCRY_MD_SHA384, fname );
+               if (!gcry_md_test_algo (GCRY_MD_SHA512))
+diff --git a/g10/gpgv.c b/g10/gpgv.c
+index 50ec3917a..c48273c92 100644
+--- a/g10/gpgv.c
++++ b/g10/gpgv.c
+@@ -207,7 +207,6 @@ main( int argc, char **argv )
+   tty_batchmode(1);
+   dotlock_disable ();
+   gcry_control (GCRYCTL_INITIALIZATION_FINISHED, 0);
+-  additional_weak_digest("MD5");
+   gnupg_initialize_compliance (GNUPG_MODULE_NAME_GPG);
+ 
+   pargs.argc = &argc;
